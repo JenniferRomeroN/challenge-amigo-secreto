@@ -1,72 +1,48 @@
-// El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
 let amigos = [];
+let buttonAgregar = document.getElementById("add");
+let buttonSortear = document.getElementById("sorteos");
 
-function agregarAmigos(){
-    let input = document.getElementById('amigo');
-    let lista = document.getElementById('listaAmigos');
+buttonAgregar.addEventListener("click", function () {
+    let input = document.getElementById("amigo");
     let nombre = input.value.trim();
 
-    if(nombre === ""){
-        alert('ingrese un nombre valido');
+    if (nombre === "") {
+        alert("Ingrese un nombre válido.");
         return;
     }
 
-    if(amigos.includes(nombre)){
-        alert('este nombre ya ha sido agregado')
+    if (amigos.includes(nombre)) {
+        alert("Este nombre ya ha sido agregado.");
         return;
     }
+
     amigos.push(nombre);
-    input.value = '';
-}
+    actualizarLista();
+    input.value = "";
+});
 
-function actualizar(){
-    const lista = document.getElementById('listaAmigos');
-    lista.innerText ="";
-
-    amigos.forEach(amigo =>{
-        const li = document.createElement('li');
-        li.textContent = amigo;
-        lista.append(li);
-    })
-}
-
-function sortearAmigo() {
-    if (amigos.length < 2) {
-        alert("Agrega al menos dos amigos para sortear.");
-        return;
-    }
-
-    const resultadoLista = document.getElementById("resultado");
-    resultadoLista.innerHTML = "";
-
-    let copiaAmigos = [...amigos];
-    let asignaciones = {};
+function actualizarLista() {
+    const lista = document.getElementById("listaAmigos");
+    lista.innerHTML = ""; // Limpiar lista antes de actualizar
 
     amigos.forEach(amigo => {
-        let amigoSecreto;
-        do {
-            amigoSecreto = copiaAmigos[Math.floor(Math.random() * copiaAmigos.length)];
-        } while (amigoSecreto === amigo || asignaciones[amigoSecreto]);
-        
-        asignaciones[amigo] = amigoSecreto;
-        copiaAmigos = copiaAmigos.filter(a => a !== amigoSecreto);
-    });
-
-    for (const [amigo, secreto] of Object.entries(asignaciones)) {
         const li = document.createElement("li");
-        li.textContent = `${amigo} → ${secreto}`;
-        resultadoLista.appendChild(li);
-    }
+        li.textContent = amigo;
+        lista.appendChild(li);
+    });
 }
 
-function sortearUnAmigo() {
+buttonSortear.addEventListener("click", function () {
     if (amigos.length === 0) {
         alert("No hay amigos disponibles para sortear.");
         return;
     }
-    
+
+    // Generar un índice aleatorio
     const indiceAleatorio = Math.floor(Math.random() * amigos.length);
     const amigoSorteado = amigos[indiceAleatorio];
-    
-    document.getElementById("resultado").innerHTML = `<p>El amigo sorteado es: <strong>${amigoSorteado}</strong></p>`;
-}
+
+    // Mostrar el resultado
+    document.getElementById("resultado").innerHTML = 
+        `<p>El amigo sorteado es: <strong>${amigoSorteado}</strong></p>`;
+});
